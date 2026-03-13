@@ -1,22 +1,40 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: KrishiCopilot AI - Intelligent Farming Decision Assistant API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: weather
+    description: Weather and alerts
+  - name: crops
+    description: Crop recommendations
+  - name: market
+    description: Market intelligence
+  - name: chatbot
+    description: AI Farm Chatbot
+  - name: pest
+    description: Pest detection
+  - name: farmer-market
+    description: Farmer to customer marketplace
+  - name: land
+    description: Land marketplace
+  - name: shops
+    description: Nearby shops
+  - name: news
+    description: Agriculture news and schemes
+  - name: language
+    description: Language preferences
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +42,376 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /weather:
+    get:
+      operationId: getWeather
+      tags: [weather]
+      summary: Get weather data and alerts
+      parameters:
+        - name: lat
+          in: query
+          schema:
+            type: number
+          required: false
+        - name: lon
+          in: query
+          schema:
+            type: number
+          required: false
+        - name: location
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: Weather data with alerts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeatherResponse"
+
+  /crops/recommend:
+    post:
+      operationId: getCropRecommendation
+      tags: [crops]
+      summary: Get crop recommendations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CropRecommendationRequest"
+      responses:
+        "200":
+          description: Crop recommendations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CropRecommendationResponse"
+
+  /crops/simulate:
+    post:
+      operationId: simulateFarm
+      tags: [crops]
+      summary: Farm simulation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FarmSimulationRequest"
+      responses:
+        "200":
+          description: Simulation results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FarmSimulationResponse"
+
+  /market/prices:
+    post:
+      operationId: getMarketPrices
+      tags: [market]
+      summary: Get market prices with predictions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MarketPriceRequest"
+      responses:
+        "200":
+          description: Market price data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketPriceResponse"
+
+  /market/history:
+    get:
+      operationId: getMarketHistory
+      tags: [market]
+      summary: Get market search history
+      responses:
+        "200":
+          description: Market search history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MarketSearchHistory"
+
+  /chatbot/message:
+    post:
+      operationId: sendChatMessage
+      tags: [chatbot]
+      summary: Send message to chatbot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatMessageRequest"
+      responses:
+        "200":
+          description: Chatbot response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatMessageResponse"
+
+  /chatbot/history:
+    get:
+      operationId: getChatHistory
+      tags: [chatbot]
+      summary: Get chat history
+      parameters:
+        - name: session_id
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: Chat history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+
+    delete:
+      operationId: clearChatHistory
+      tags: [chatbot]
+      summary: Clear chat history
+      parameters:
+        - name: session_id
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: Cleared
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /pest/detect:
+    post:
+      operationId: detectPest
+      tags: [pest]
+      summary: Detect pest from image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PestDetectionRequest"
+      responses:
+        "200":
+          description: Pest detection result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PestDetectionResponse"
+
+  /pest/scans:
+    get:
+      operationId: getPestScans
+      tags: [pest]
+      summary: Get pest scan history
+      responses:
+        "200":
+          description: Pest scan history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PestScan"
+
+  /farmer-market/listings:
+    get:
+      operationId: getFarmerListings
+      tags: [farmer-market]
+      summary: Get farmer market listings
+      parameters:
+        - name: crop
+          in: query
+          schema:
+            type: string
+          required: false
+        - name: state
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: Farmer listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FarmerListing"
+
+    post:
+      operationId: createFarmerListing
+      tags: [farmer-market]
+      summary: Create farmer listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FarmerListingCreate"
+      responses:
+        "201":
+          description: Created listing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FarmerListing"
+
+  /land/listings:
+    get:
+      operationId: getLandListings
+      tags: [land]
+      summary: Get land marketplace listings
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [buy, rent, sell, lease]
+          required: false
+        - name: state
+          in: query
+          schema:
+            type: string
+          required: false
+        - name: soil_type
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: Land listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LandListing"
+
+    post:
+      operationId: createLandListing
+      tags: [land]
+      summary: Create land listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LandListingCreate"
+      responses:
+        "201":
+          description: Created listing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LandListing"
+
+  /shops/nearby:
+    get:
+      operationId: getNearbyShops
+      tags: [shops]
+      summary: Get nearby farm equipment and fertilizer shops
+      parameters:
+        - name: state
+          in: query
+          schema:
+            type: string
+          required: false
+        - name: district
+          in: query
+          schema:
+            type: string
+          required: false
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [equipment, fertilizer, all]
+          required: false
+      responses:
+        "200":
+          description: Nearby shops
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shop"
+
+  /news:
+    get:
+      operationId: getAgriNews
+      tags: [news]
+      summary: Get agriculture news and government schemes
+      responses:
+        "200":
+          description: News and schemes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsResponse"
+
+  /language/preference:
+    get:
+      operationId: getLanguagePreference
+      tags: [language]
+      summary: Get saved language preference
+      parameters:
+        - name: user_id
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: Language preference
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LanguagePreference"
+
+    post:
+      operationId: saveLanguagePreference
+      tags: [language]
+      summary: Save language preference
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LanguagePreference"
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +422,734 @@ components:
       required:
         - status
 
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+        - success
+
+    WeatherAlert:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [rain_alert, drought_risk, heat_stress, excess_rainfall, flood_risk]
+        severity:
+          type: string
+          enum: [low, medium, high]
+        message:
+          type: string
+        icon:
+          type: string
+      required:
+        - type
+        - severity
+        - message
+        - icon
+
+    DayWeather:
+      type: object
+      properties:
+        date:
+          type: string
+        day:
+          type: string
+        maxTemp:
+          type: number
+        minTemp:
+          type: number
+        precipitation:
+          type: number
+        humidity:
+          type: number
+        windSpeed:
+          type: number
+        condition:
+          type: string
+        icon:
+          type: string
+      required:
+        - date
+        - day
+        - maxTemp
+        - minTemp
+        - precipitation
+        - humidity
+        - windSpeed
+        - condition
+        - icon
+
+    WeatherResponse:
+      type: object
+      properties:
+        location:
+          type: string
+        current:
+          $ref: "#/components/schemas/DayWeather"
+        forecast:
+          type: array
+          items:
+            $ref: "#/components/schemas/DayWeather"
+        alerts:
+          type: array
+          items:
+            $ref: "#/components/schemas/WeatherAlert"
+      required:
+        - location
+        - current
+        - forecast
+        - alerts
+
+    CropRecommendationRequest:
+      type: object
+      properties:
+        soil_type:
+          type: string
+        state:
+          type: string
+        season:
+          type: string
+          enum: [kharif, rabi, zaid]
+        rainfall:
+          type: number
+        temperature:
+          type: number
+        ph:
+          type: number
+        nitrogen:
+          type: number
+        phosphorus:
+          type: number
+        potassium:
+          type: number
+      required:
+        - soil_type
+        - state
+        - season
+
+    CropRecommendation:
+      type: object
+      properties:
+        crop:
+          type: string
+        confidence:
+          type: number
+        suitability:
+          type: string
+          enum: [excellent, good, fair]
+        description:
+          type: string
+        waterRequirement:
+          type: string
+        duration:
+          type: string
+        expectedYield:
+          type: string
+        marketPrice:
+          type: string
+      required:
+        - crop
+        - confidence
+        - suitability
+        - description
+        - waterRequirement
+        - duration
+        - expectedYield
+        - marketPrice
+
+    CropRecommendationResponse:
+      type: object
+      properties:
+        recommendations:
+          type: array
+          items:
+            $ref: "#/components/schemas/CropRecommendation"
+        advisory:
+          type: string
+      required:
+        - recommendations
+        - advisory
+
+    FarmSimulationRequest:
+      type: object
+      properties:
+        crop:
+          type: string
+        land_area:
+          type: number
+        soil_type:
+          type: string
+        irrigation_type:
+          type: string
+        fertilizer_type:
+          type: string
+        state:
+          type: string
+        season:
+          type: string
+      required:
+        - crop
+        - land_area
+        - soil_type
+        - irrigation_type
+        - fertilizer_type
+        - state
+        - season
+
+    FarmSimulationResponse:
+      type: object
+      properties:
+        crop:
+          type: string
+        landArea:
+          type: number
+        estimatedYield:
+          type: number
+        estimatedRevenue:
+          type: number
+        totalCost:
+          type: number
+        profit:
+          type: number
+        roi:
+          type: number
+        breakdown:
+          type: object
+          properties:
+            seedCost:
+              type: number
+            fertilizerCost:
+              type: number
+            irrigationCost:
+              type: number
+            laborCost:
+              type: number
+            otherCost:
+              type: number
+          required:
+            - seedCost
+            - fertilizerCost
+            - irrigationCost
+            - laborCost
+            - otherCost
+        recommendations:
+          type: array
+          items:
+            type: string
+      required:
+        - crop
+        - landArea
+        - estimatedYield
+        - estimatedRevenue
+        - totalCost
+        - profit
+        - roi
+        - breakdown
+        - recommendations
+
+    MarketPriceRequest:
+      type: object
+      properties:
+        state:
+          type: string
+        district:
+          type: string
+        market:
+          type: string
+        crop_name:
+          type: string
+        quantity:
+          type: number
+      required:
+        - state
+        - crop_name
+
+    MandiPrice:
+      type: object
+      properties:
+        market:
+          type: string
+        district:
+          type: string
+        currentPrice:
+          type: number
+        minPrice:
+          type: number
+        maxPrice:
+          type: number
+        unit:
+          type: string
+        distance:
+          type: string
+      required:
+        - market
+        - district
+        - currentPrice
+        - minPrice
+        - maxPrice
+        - unit
+        - distance
+
+    MarketPriceResponse:
+      type: object
+      properties:
+        crop:
+          type: string
+        state:
+          type: string
+        currentPrice:
+          type: number
+        prediction5Day:
+          type: number
+        prediction10Day:
+          type: number
+        trend:
+          type: string
+          enum: [rising, falling, stable]
+        trendPercent:
+          type: number
+        unit:
+          type: string
+        nearbyMandis:
+          type: array
+          items:
+            $ref: "#/components/schemas/MandiPrice"
+        bestMarket:
+          type: string
+        advice:
+          type: string
+      required:
+        - crop
+        - state
+        - currentPrice
+        - prediction5Day
+        - prediction10Day
+        - trend
+        - trendPercent
+        - unit
+        - nearbyMandis
+        - bestMarket
+        - advice
+
+    MarketSearchHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+        crop:
+          type: string
+        state:
+          type: string
+        district:
+          type: string
+        searchedAt:
+          type: string
+      required:
+        - id
+        - crop
+        - state
+        - searchedAt
+
+    ChatMessageRequest:
+      type: object
+      properties:
+        message:
+          type: string
+        session_id:
+          type: string
+        language:
+          type: string
+      required:
+        - message
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+        sessionId:
+          type: string
+        role:
+          type: string
+          enum: [user, bot]
+        message:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - sessionId
+        - role
+        - message
+        - createdAt
+
+    ChatMessageResponse:
+      type: object
+      properties:
+        response:
+          type: string
+        sessionId:
+          type: string
+        suggestions:
+          type: array
+          items:
+            type: string
+      required:
+        - response
+        - sessionId
+        - suggestions
+
+    PestDetectionRequest:
+      type: object
+      properties:
+        imageBase64:
+          type: string
+        cropType:
+          type: string
+        location:
+          type: string
+      required:
+        - imageBase64
+
+    PestDetectionResponse:
+      type: object
+      properties:
+        detectedPest:
+          type: string
+        confidence:
+          type: number
+        organicTreatment:
+          type: array
+          items:
+            type: string
+        chemicalTreatment:
+          type: array
+          items:
+            type: string
+        preventionTips:
+          type: array
+          items:
+            type: string
+        severity:
+          type: string
+          enum: [low, medium, high]
+        scanId:
+          type: integer
+      required:
+        - detectedPest
+        - confidence
+        - organicTreatment
+        - chemicalTreatment
+        - preventionTips
+        - severity
+        - scanId
+
+    PestScan:
+      type: object
+      properties:
+        id:
+          type: integer
+        detectedPest:
+          type: string
+        confidence:
+          type: number
+        cropType:
+          type: string
+        location:
+          type: string
+        scannedAt:
+          type: string
+      required:
+        - id
+        - detectedPest
+        - confidence
+        - scannedAt
+
+    FarmerListing:
+      type: object
+      properties:
+        id:
+          type: integer
+        crop:
+          type: string
+        quantity:
+          type: number
+        unit:
+          type: string
+        price:
+          type: number
+        location:
+          type: string
+        state:
+          type: string
+        contact:
+          type: string
+        farmerName:
+          type: string
+        harvestDate:
+          type: string
+        quality:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - crop
+        - quantity
+        - unit
+        - price
+        - location
+        - state
+        - contact
+        - farmerName
+        - harvestDate
+        - createdAt
+
+    FarmerListingCreate:
+      type: object
+      properties:
+        crop:
+          type: string
+        quantity:
+          type: number
+        unit:
+          type: string
+        price:
+          type: number
+        location:
+          type: string
+        state:
+          type: string
+        contact:
+          type: string
+        farmerName:
+          type: string
+        harvestDate:
+          type: string
+        quality:
+          type: string
+        description:
+          type: string
+      required:
+        - crop
+        - quantity
+        - unit
+        - price
+        - location
+        - state
+        - contact
+        - farmerName
+        - harvestDate
+
+    LandListing:
+      type: object
+      properties:
+        id:
+          type: integer
+        listingType:
+          type: string
+          enum: [buy, rent, sell, lease]
+        village:
+          type: string
+        district:
+          type: string
+        state:
+          type: string
+        soilType:
+          type: string
+        farmSize:
+          type: number
+        waterAvailability:
+          type: string
+        price:
+          type: number
+        priceUnit:
+          type: string
+        contact:
+          type: string
+        ownerName:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - listingType
+        - village
+        - district
+        - state
+        - soilType
+        - farmSize
+        - waterAvailability
+        - price
+        - priceUnit
+        - contact
+        - ownerName
+        - createdAt
+
+    LandListingCreate:
+      type: object
+      properties:
+        listingType:
+          type: string
+          enum: [buy, rent, sell, lease]
+        village:
+          type: string
+        district:
+          type: string
+        state:
+          type: string
+        soilType:
+          type: string
+        farmSize:
+          type: number
+        waterAvailability:
+          type: string
+        price:
+          type: number
+        priceUnit:
+          type: string
+        contact:
+          type: string
+        ownerName:
+          type: string
+        description:
+          type: string
+      required:
+        - listingType
+        - village
+        - district
+        - state
+        - soilType
+        - farmSize
+        - waterAvailability
+        - price
+        - priceUnit
+        - contact
+        - ownerName
+
+    Shop:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          enum: [equipment, fertilizer, seeds, pesticides]
+        category:
+          type: string
+        address:
+          type: string
+        district:
+          type: string
+        state:
+          type: string
+        phone:
+          type: string
+        distance:
+          type: string
+        rating:
+          type: number
+        timings:
+          type: string
+      required:
+        - id
+        - name
+        - type
+        - category
+        - address
+        - district
+        - state
+        - phone
+        - distance
+        - rating
+
+    NewsArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        source:
+          type: string
+        date:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        url:
+          type: string
+      required:
+        - id
+        - title
+        - description
+        - source
+        - date
+        - category
+
+    GovernmentScheme:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        benefit:
+          type: string
+        eligibility:
+          type: string
+        applicationUrl:
+          type: string
+        ministry:
+          type: string
+        category:
+          type: string
+      required:
+        - id
+        - name
+        - description
+        - benefit
+        - eligibility
+        - ministry
+        - category
+
+    NewsResponse:
+      type: object
+      properties:
+        news:
+          type: array
+          items:
+            $ref: "#/components/schemas/NewsArticle"
+        schemes:
+          type: array
+          items:
+            $ref: "#/components/schemas/GovernmentScheme"
+      required:
+        - news
+        - schemes
+
+    LanguagePreference:
+      type: object
+      properties:
+        userId:
+          type: string
+        language:
+          type: string
+          enum: [en, hi, mr, ta, ml, bn, kn, te]
+      required:
+        - language

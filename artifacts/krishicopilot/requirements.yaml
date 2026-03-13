@@ -1,0 +1,18 @@
+packages:
+  "recharts": "Data visualization for weather, farm ROI, and market price trends"
+  "framer-motion": "Smooth page transitions, micro-interactions, and voice waveform animations"
+  "lucide-react": "Beautiful consistent iconography across all application modules"
+  "react-webcam": "For pest camera functionality to capture images"
+
+images:
+  - path: "artifacts/krishicopilot/public/images/hero-bg.png"
+    description: "Breathtaking aerial view of lush green Indian terraced farms at sunrise, warm glowing sunlight, rich earth tones and vibrant greens, photorealistic, highly detailed"
+    aspect_ratio: "16:9"
+  - path: "artifacts/krishicopilot/public/images/voice-bg.png"
+    description: "Abstract sound waves radiating over a stylized geometric green agricultural field, vibrant tech-nature aesthetic, deep greens and warm oranges, clean minimal modern design"
+    aspect_ratio: "16:9"
+
+notes:
+  - Uses @workspace/api-client-react for all API interactions
+  - Relies on HTML5 Web Speech API for voice recognition (browser dependent)
+  - Uses native file input with environment camera capture for Pest Detection

@@ -1,0 +1,788 @@
+You are a senior full-stack engineer.
+
+Upgrade my existing FastAPI + Jinja2 + SQLite web application:
+
+KrishiCopilot AI
+Tagline: "The Intelligent Farming Decision Assistant"
+
+IMPORTANT RULES
+
+Do NOT break existing routes or working features.
+Extend the project cleanly.
+All buttons, cards, links, dropdowns, tabs and tiles must be clickable and functional.
+All pages must load without errors.
+
+The project must run in Replit Free using:
+
+uvicorn main:app --host 0.0.0.0 --port 3000
+
+Use lightweight rule-based logic.
+Do NOT use heavy ML libraries.
+Use SQLite for storage.
+If internet APIs fail, show cached or sample data.
+
+The application must be visually attractive, hackathon-ready, and demo friendly.
+
+--------------------------------------------------
+
+TECH STACK
+
+Backend: FastAPI
+Frontend: Jinja2 + HTML + CSS + Vanilla JavaScript
+Database: SQLite
+Charts: Chart.js CDN
+Weather API: Open-Meteo
+Uploads: static/uploads
+Images: static/images
+
+--------------------------------------------------
+
+MAIN FEATURES TO IMPLEMENT
+
+--------------------------------------------------
+
+1. MODERN AGRICULTURE UI / UX
+
+Create an attractive AgriTech startup style interface.
+
+Add agriculture images across pages:
+
+• farmer using smartphone in field  
+• crop cultivation fields  
+• farmers harvesting crops  
+• tractors working in fields  
+• irrigation systems  
+• vegetable farms  
+• pest inspection images  
+
+Store images in:
+
+static/images/
+
+Use images in:
+
+Landing page hero
+Dashboard header
+Crop recommendation page
+Disease detection page
+Simulation page
+Market page
+Monitor page
+
+Feature cards must include:
+
+image
+title
+description
+button
+
+Add hover animation.
+
+Use green agriculture theme colors.
+
+--------------------------------------------------
+
+2. MULTI LANGUAGE SUPPORT
+
+Add full multilingual support.
+
+Languages:
+
+English
+Hindi (हिन्दी)
+Marathi (मराठी)
+Tamil (தமிழ்)
+Malayalam (മലയാളം)
+Bengali (বাংলা)
+Kannada (ಕನ್ನಡ)
+Telugu (తెలుగు)
+
+Create translation dictionary:
+
+services/translation_service.py
+
+Use template helper:
+
+{{ t("key_name") }}
+
+Add language selector dropdown in navbar.
+
+Save language preference in:
+
+saved_language_preferences table.
+
+Switch language across all pages dynamically.
+
+Translate:
+
+navbar
+buttons
+alerts
+dashboard labels
+forms
+market page
+disease scan
+simulation
+monitor
+offline help
+
+--------------------------------------------------
+
+3. WEATHER ALERT SYSTEM
+
+Upgrade weather module.
+
+Add alerts:
+
+Rain Alert
+Drought Risk
+Heat Stress
+Excess Rainfall
+Flood Risk
+
+Logic:
+
+rain probability >70 → rain alert
+
+5 consecutive dry days + high temperature → drought warning
+
+temperature >38 → heat stress
+
+heavy rain → flood warning
+
+Display alert cards on dashboard.
+
+Add 7-day weather chart using Chart.js.
+
+Save alerts into advisories table.
+
+--------------------------------------------------
+
+4. LOCATION BASED MARKET INTELLIGENCE
+
+Improve /market page.
+
+Add form fields:
+
+state
+district
+market
+crop_name
+quantity
+
+Create mandi dataset for:
+
+Maharashtra
+Karnataka
+Tamil Nadu
+Kerala
+West Bengal
+Uttar Pradesh
+Madhya Pradesh
+
+Each mandi has different crop prices.
+
+Example:
+
+Nashik tomato ≠ Chennai tomato.
+
+Show:
+
+current price
+5 day prediction
+10 day prediction
+price trend badge
+best nearby market suggestion
+
+Add comparison table of 3 nearby mandis.
+
+Buttons:
+
+Analyze Market
+Refresh Market Prices
+Compare Nearby Markets
+
+Save searches in:
+
+market_search_history table.
+
+--------------------------------------------------
+
+5. AI FARM CHATBOT
+
+Create conversational assistant.
+
+Route:
+
+/chatbot
+
+Service:
+
+services/chatbot_service.py
+
+Floating chat button on every page bottom-right.
+
+Chat UI features:
+
+chat bubbles
+user message
+bot response
+chat history
+clear chat button
+
+Store messages in:
+
+chat_messages table.
+
+Chatbot answers farmer questions about:
+
+weather
+crop advice
+disease
+pests
+fertilizer
+market
+yield
+soil
+simulation
+
+If unknown query show fallback message.
+
+--------------------------------------------------
+
+6. VOICE ASSISTANT FOR FARMERS
+
+Create voice interface.
+
+Route:
+
+/voice-assistant
+
+Use browser Web Speech API.
+
+Supported languages:
+
+Hindi
+Marathi
+English
+
+Features:
+
+microphone button
+voice input
+speech to text
+send text to chatbot
+voice response using speech synthesis
+
+Voice recognition languages:
+
+Hindi → hi-IN
+Marathi → mr-IN
+English → en-US
+
+UI should show:
+
+farmer using mobile image
+microphone animation
+voice waveform
+
+--------------------------------------------------
+
+7. AI PEST DETECTION USING CAMERA
+
+Create route:
+
+/pest-camera
+
+Allow farmer to capture crop image.
+
+Use HTML camera input:
+
+<input type="file" accept="image/*" capture="environment">
+
+Save images in:
+
+static/uploads
+
+Create service:
+
+services/pest_camera_service.py
+
+Use rule-based pest detection.
+
+Detect pests like:
+
+aphid
+caterpillar
+leaf miner
+thrips
+whitefly
+stem borer
+
+Output:
+
+Detected Pest
+Confidence
+Organic Treatment
+Chemical Treatment
+Prevention Tips
+
+Store results in:
+
+pest_camera_scans table.
+
+--------------------------------------------------
+
+8. FARMER TO CUSTOMER MARKETPLACE
+
+Create route:
+
+/farmer-market
+
+Farmers can sell crops directly to customers.
+
+Fields:
+
+crop
+quantity
+price
+location
+contact
+harvest date
+
+Buttons:
+
+Call Farmer
+WhatsApp
+View Farm
+
+Store listings in:
+
+farmer_marketplace table.
+
+--------------------------------------------------
+
+9. LAND MARKETPLACE
+
+Route:
+
+/land-marketplace
+
+Tabs:
+
+Buy Land
+Rent Land
+Sell Land
+Lease Land
+
+Listing fields:
+
+village
+district
+state
+soil_type
+farm_size
+water_availability
+price
+contact
+
+Filters:
+
+state
+soil type
+farm size
+
+Store listings in:
+
+land_listings table.
+
+--------------------------------------------------
+
+10. NEARBY FARM EQUIPMENT SHOPS
+
+Route:
+
+/nearby-shops
+
+Show shops based on farmer location.
+
+Each card shows:
+
+shop name
+shop type
+address
+phone
+distance
+
+Buttons:
+
+View Details
+Call Shop
+Get Directions
+
+--------------------------------------------------
+
+11. FERTILIZER SHOPS
+
+Route:
+
+/fertilizer-shops
+
+Categories:
+
+Organic
+Inorganic
+Biofertilizer
+Mixed
+
+Buttons:
+
+Call
+Locate Shop
+View Products
+
+--------------------------------------------------
+
+12. BIOFERTILIZER GUIDE
+
+Route:
+
+/biofertilizer-guide
+
+Sections:
+
+Vermicompost
+Cow dung compost
+Crop residue compost
+Kitchen waste compost
+Bio slurry
+
+Each card shows:
+
+materials
+steps
+time
+benefits
+usage
+
+--------------------------------------------------
+
+13. AGRICULTURE NEWS AND GOVERNMENT SCHEMES
+
+Route:
+
+/agri-news
+
+Service:
+
+services/news_service.py
+
+Show two sections:
+
+Agriculture News
+Farmer Government Schemes
+
+News card:
+
+title
+description
+image
+source
+date
+
+Schemes include:
+
+PM Kisan Samman Nidhi
+PM Fasal Bima Yojana
+Soil Health Card Scheme
+Kisan Credit Card
+eNAM
+
+Buttons:
+
+View Details
+Official Website
+
+--------------------------------------------------
+
+14. LIVE AGRICULTURE UPDATES PANEL
+
+Create route:
+
+/live-updates
+
+Show scrolling feed with:
+
+weather alerts
+market updates
+pest outbreaks
+scheme announcements
+
+--------------------------------------------------
+
+15. SUCCESS STORIES SECTION
+
+Add on landing page.
+
+Show farmer cards:
+
+image
+name
+state
+crop
+yield improvement
+
+--------------------------------------------------
+
+16. AGRICULTURE PRODUCT SUGGESTIONS
+
+Show cards for:
+
+fertilizers
+seeds
+irrigation tools
+pesticides
+farm machinery
+
+--------------------------------------------------
+
+17. NAVBAR
+
+Include links:
+
+Home
+Profile
+Dashboard
+Crop Advice
+Disease Scan
+Simulation
+Stress Alert
+Market
+Agent
+Monitor
+Pest Info
+Voice Assistant
+Pest Camera
+Nearby Shops
+Fertilizer Shops
+Biofertilizer Guide
+Farmer Market
+Land Marketplace
+Agri News
+Offline Help
+
+--------------------------------------------------
+
+18. OFFLINE MODE
+
+If weather API fails:
+
+use weather_cache.
+
+If cache empty:
+
+use default values.
+
+Show badge:
+
+Online
+Offline
+Using Cached Data
+
+--------------------------------------------------
+
+19. DATABASE TABLES
+
+Ensure the following tables exist:
+
+market_search_history
+nearby_shops
+fertilizer_shops
+land_listings
+saved_language_preferences
+biofertilizer_saved_guides
+farmer_marketplace
+chat_messages
+pest_camera_scans
+agri_news
+government_schemes
+live_updates
+
+Auto create tables in db.py.
+
+--------------------------------------------------
+
+20. FINAL REQUIREMENTS
+
+Generate or update all files.
+
+Ensure:
+
+no broken routes
+no template errors
+all buttons clickable
+all forms working
+voice assistant works
+camera detection works
+chatbot works
+language switching works
+charts render
+images load correctly
+
+The final system must be visually impressive and hackathon-ready.  Fix the following issues in my KrishiCopilot web application.
+
+Tech stack:
+Frontend: HTML, CSS, JavaScript, Jinja2
+Backend: Python FastAPI
+Database: SQLite
+
+ISSUE 1 — Language Switch Not Working
+
+There is a language switch button in the top right (currently showing "TA").
+When I click it, the website language should change dynamically.
+
+Requirements:
+1. Implement a working language toggle system.
+2. Support at least English and Tamil.
+3. When the user clicks the language button:
+   - Text on the page should change instantly.
+   - Save the selected language in localStorage.
+4. Use a translation dictionary like:
+
+const translations = {
+  en: {
+    dashboard: "Dashboard",
+    marketIntel: "Market Intelligence",
+    voiceAssistant: "Voice Assistant",
+    pestScan: "Pest Scan",
+    farmerMarket: "Farmer Market",
+    landMarket: "Land Market",
+    buy: "Buy",
+    sell: "Sell",
+    lease: "Lease",
+    rent: "Rent"
+  },
+  ta: {
+    dashboard: "டாஷ்போர்டு",
+    marketIntel: "மார்க்கெட் தகவல்",
+    voiceAssistant: "குரல் உதவியாளர்",
+    pestScan: "பூச்சி கண்டறிதல்",
+    farmerMarket: "விவசாய சந்தை",
+    landMarket: "நில சந்தை",
+    buy: "வாங்க",
+    sell: "விற்க",
+    lease: "குத்தகை",
+    rent: "வாடகை"
+  }
+}
+
+Add a JavaScript function that updates all UI text based on the selected language.
+
+------------------------------------------------
+
+ISSUE 2 — Buttons Not Clickable
+
+All buttons must be clickable and functional.
+
+Buttons include:
+Buy
+Sell
+Lease
+Rent
+Sidebar navigation items
+
+Requirements:
+1. Add proper click event listeners.
+2. Each button should switch tabs or load relevant content dynamically.
+3. Highlight the active tab with a CSS active state.
+4. Prevent page reload if not needed.
+
+Example:
+document.querySelectorAll(".tab-button").forEach(btn => {
+  btn.addEventListener("click", function(){
+      document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"))
+      this.classList.add("active")
+  })
+})
+
+------------------------------------------------
+
+ISSUE 3 — News Image Not Loading
+
+The news section images are not displaying correctly.
+
+Fix requirements:
+1. Ensure images load properly using correct paths.
+2. Add fallback image if image URL fails.
+3. Use responsive images with proper sizing.
+4. Example fallback:
+
+<img src="news-image.jpg"
+     onerror="this.src='/static/images/default-news.jpg'"
+     class="news-img">
+
+5. Ensure static files are served correctly in FastAPI:
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+------------------------------------------------
+
+EXTRA IMPROVEMENTS
+
+1. Make all UI components responsive.
+2. Improve button hover states.
+3. Add smooth transitions.
+4. Ensure sidebar navigation works correctly.
+5. Make sure images load from /static/images properly.  Upgrade my existing FastAPI + Jinja2 web application "KrishiCopilot AI" by adding full multilingual UI support for desktop and mobile views.
+
+Requirements:
+
+Do not regenerate the whole app.
+Update the existing project only.
+Translate all UI/UX text across all templates and major frontend interactions.
+Add language support for:
+English
+Hindi
+Marathi
+Tamil
+Malayalam
+Bengali
+Implement this properly using:
+
+a translations.py file with translation dictionaries
+session-based language selection using SessionMiddleware
+a language selector dropdown in the navbar
+translation helper passed to all templates
+replacement of static English UI text with translation keys in all templates
+Translate:
+
+navbar items
+page headings
+form labels
+buttons
+cards
+dashboard section headings
+weather labels
+market labels
+disease scan labels
+monitor labels
+offline help labels
+alerts
+success/error messages
+table headers
+empty-state text
+quick action labels
+Important:
+
+every language option in dropdown must be clickable and functional
+selected language must persist across page navigation
+keep English as default
+if any translation key is missing, safely fall back to English
+update CSS if needed so translated text does not break layout
+ensure desktop UI remains clean and responsive after translation
+do not break any existing route or feature
+Create/update all required files and code completely.
+
+
+
+Return the updated HTML, CSS, and JavaScript code with fixes.   all the buttons should be clickable and in working condition in frontend  ai voice assistant should be workable its not working add new section regarding news related to farmer and agriculture it will help for farmers workload many schemes are there like that  i want all this in one text prompt for replit

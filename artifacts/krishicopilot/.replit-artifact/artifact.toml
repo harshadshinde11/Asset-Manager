@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "KrishiCopilot AI"
+version = "1.0.0"
+id = "artifacts/krishicopilot"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 18385
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/krishicopilot run dev"
+
+[services.env]
+PORT = "18385"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/krishicopilot", "run", "build"]
+publicDir = "artifacts/krishicopilot/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
